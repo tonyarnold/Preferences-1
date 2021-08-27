@@ -42,8 +42,14 @@ public final class PreferencesWindowController: NSWindowController {
 			backing: .buffered,
 			defer: true
 		)
+
+		// Center the window by default
+		window.center()
+
 		self.hidesToolbarForSingleItem = hidesToolbarForSingleItem
 		super.init(window: window)
+
+		self.windowFrameAutosaveName = .preferences
 
 		window.contentViewController = tabViewController
 
@@ -81,14 +87,16 @@ public final class PreferencesWindowController: NSWindowController {
 
 	If you pass a `Preferences.PaneIdentifier`, the window will activate the corresponding tab.
 
-	- Parameter preferencePane: Identifier of the preference pane to display, or `nil` to show the tab that was open when the user last closed the window.
+	- Parameters:
+	 - preferencePane: Identifier of the preference pane to display, or `nil` to show the tab that was open when the user last closed the window.
+	 - forceActivateApp: Forces the app to come to the foreground after the preferences window is shown. Only recommended for `LSUIElement` apps.
 
 	- Note: Unless you need to open a specific pane, prefer not to pass a parameter at all or `nil`.
 
 	- See `close()` to close the window again.
 	- See `showWindow(_:)` to show the window without the convenience of activating the app.
 	*/
-	public func show(preferencePane preferenceIdentifier: Preferences.PaneIdentifier? = nil) {
+	public func show(preferencePane preferenceIdentifier: Preferences.PaneIdentifier? = nil, forceAppToActivate: Bool = false) {
 		if let preferenceIdentifier = preferenceIdentifier {
 			tabViewController.activateTab(preferenceIdentifier: preferenceIdentifier, animated: false)
 		} else {
@@ -96,24 +104,10 @@ public final class PreferencesWindowController: NSWindowController {
 		}
 
 		showWindow(self)
-		restoreWindowPosition()
-		NSApp.activate(ignoringOtherApps: true)
-	}
 
-	private func restoreWindowPosition() {
-		guard
-			let window = window,
-			let screenContainingWindow = window.screen
-		else {
-			return
+		if forceAppToActivate {
+			NSApp.activate(ignoringOtherApps: true)
 		}
-
-		window.setFrameOrigin(CGPoint(
-			x: screenContainingWindow.visibleFrame.midX - window.frame.width / 2,
-			y: screenContainingWindow.visibleFrame.midY - window.frame.height / 2
-		))
-		window.setFrameUsingName(.preferences)
-		window.setFrameAutosaveName(.preferences)
 	}
 }
 
