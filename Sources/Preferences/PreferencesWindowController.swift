@@ -29,7 +29,8 @@ public final class PreferencesWindowController: NSWindowController {
 		preferencePanes: [PreferencePane],
 		style: Preferences.Style = .toolbarItems,
 		animated: Bool = true,
-		hidesToolbarForSingleItem: Bool = true
+		hidesToolbarForSingleItem: Bool = true,
+		windowFrameAutosaveName: NSWindow.FrameAutosaveName? = nil
 	) {
 		precondition(!preferencePanes.isEmpty, "You need to set at least one view controller")
 
@@ -49,7 +50,7 @@ public final class PreferencesWindowController: NSWindowController {
 		self.hidesToolbarForSingleItem = hidesToolbarForSingleItem
 		super.init(window: window)
 
-		self.windowFrameAutosaveName = .preferences
+		self.windowFrameAutosaveName = windowFrameAutosaveName ?? .preferences
 
 		window.contentViewController = tabViewController
 
