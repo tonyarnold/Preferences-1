@@ -49,7 +49,7 @@ public final class PreferencesWindowController: NSWindowController {
 
 		self.hidesToolbarForSingleItem = hidesToolbarForSingleItem
 		super.init(window: window)
-
+		window.setFrameUsingName(windowFrameAutosaveName ?? .preferences)
 		self.windowFrameAutosaveName = windowFrameAutosaveName ?? .preferences
 
 		window.contentViewController = tabViewController
@@ -70,6 +70,7 @@ public final class PreferencesWindowController: NSWindowController {
 		tabViewController.isAnimated = animated
 		tabViewController.configure(preferencePanes: preferencePanes, style: style)
 		updateToolbarVisibility()
+
 	}
 
 	@available(*, unavailable)
