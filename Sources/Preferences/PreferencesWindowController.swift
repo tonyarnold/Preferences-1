@@ -144,7 +144,8 @@ extension PreferencesWindowController {
 		panes: [PreferencePaneConvertible],
 		style: Preferences.Style = .toolbarItems,
 		animated: Bool = true,
-		hidesToolbarForSingleItem: Bool = true
+		hidesToolbarForSingleItem: Bool = true,
+		windowFrameAutosaveName: NSWindow.FrameAutosaveName? = nil
 	) {
 		let preferencePanes = panes.map { $0.asPreferencePane() }
 
@@ -152,7 +153,8 @@ extension PreferencesWindowController {
 			preferencePanes: preferencePanes,
 			style: style,
 			animated: animated,
-			hidesToolbarForSingleItem: hidesToolbarForSingleItem
+			hidesToolbarForSingleItem: hidesToolbarForSingleItem,
+			windowFrameAutosaveName: windowFrameAutosaveName
 		)
 	}
 }
